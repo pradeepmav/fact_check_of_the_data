@@ -91,6 +91,7 @@ def fact_check_of_the_data(pldataframe):
         [
             "S_No",
             "Variable_Name",
+            "D_Type",
             "No_of_Non_Missing_Values",
             "No_of_Missing_Values",
             "Missing_%",
