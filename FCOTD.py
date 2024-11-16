@@ -105,7 +105,7 @@ def fact_check_of_the_data(pldataframe):
 
     del vardtypes, varnonmissing, varmissing, vardistinct, varmin, varmax, varmean, varmedian, varmode, df, dfs, cols, join_cols
 
-    workbookname = f"{find_df_name(pldataframe)}_fact_checks_.xlsx"
+    workbookname = f"{find_df_name(pldataframe)}_fact_checks.xlsx"
 
     return final.write_excel(
         workbook=workbookname, worksheet="FCOTD", position="B2", table_style= "Table Style Light 10"
