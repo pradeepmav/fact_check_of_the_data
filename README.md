@@ -10,3 +10,5 @@ exec(requests.get('https://raw.githubusercontent.com/pradeepmav/fact_check_of_th
 fact_check_of_the_data(any/yourpolarsdataframe)
 
 ![image](https://github.com/user-attachments/assets/a010a223-f0d1-416d-866b-fd3dadde04b6)
+
+Also, Kaggle Notebook for quick run - https://www.kaggle.com/code/pradeep13/fact-checks-of-the-data-for-decoding-online-sales
