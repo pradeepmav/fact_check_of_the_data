@@ -40,13 +40,13 @@ def fact_check_of_the_data(pldataframe):
         column_names=["Max"]
     )
 
-        # Step 1: Compute column-wise means
+    # Step 1: Compute column-wise means
     mean_df = pldataframe.mean().fill_null("NA")
     # Step 2: Build a tidy two-column DataFrame manually
     varmean = pl.DataFrame({
         "Variable_Name": mean_df.columns,
         "Mean": [mean_df[0, col] for col in mean_df.columns]
-    })
+    }, strict=False)
 
     # Step 1: Compute column-wise means
     median_df = pldataframe.median().fill_null("NA")
@@ -54,7 +54,7 @@ def fact_check_of_the_data(pldataframe):
     varmedian = pl.DataFrame({
         "Variable_Name": median_df.columns,
         "Median": [median_df[0, col] for col in median_df.columns]
-    })  
+    }, strict=False)  
 
     # Step 1: Compute column-wise means
     mode_df = pldataframe.select(pl.all().mode().first())
@@ -62,7 +62,7 @@ def fact_check_of_the_data(pldataframe):
     varmode = pl.DataFrame({
         "Variable_Name": mode_df.columns,
         "Mode": [mode_df[0, col] for col in mode_df.columns]
-    })  
+    }, strict=False)  
 
     
     dfs = [
@@ -112,6 +112,8 @@ def fact_check_of_the_data(pldataframe):
         ]
     )
 
+
+
     del vardtypes, varnonmissing, varmissing, vardistinct, varmin, varmax, varmean, varmedian, varmode, df, dfs, cols, join_cols
 
     workbookname = f"{find_df_name(pldataframe)}_fact_checks.xlsx"
@@ -150,4 +152,3 @@ def fact_check_of_the_data(pldataframe):
 
 #usage example 
 ##fact_check_of_the_data(polarsdataframe)
-
