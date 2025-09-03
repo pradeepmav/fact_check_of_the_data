@@ -124,7 +124,7 @@ def fact_check_of_the_data(pldataframe):
     
         try:
             # Fallback method: write without styling
-            return final_pdf.to_excel("FCOTD.xlsx",
+            return final_pdf.to_excel(workbookname,
             index=False
                 # Omitting table_style as a fallback
             )
