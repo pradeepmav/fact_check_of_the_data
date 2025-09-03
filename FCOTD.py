@@ -112,16 +112,6 @@ def fact_check_of_the_data(pldataframe):
         ]
     )
 
-    # Define a custom function that might return a string
-    def custom_string_converter(x):
-        if x is None:
-            return "N/A"
-        return str(x)
-
-    final = final.with_columns(
-    pl.all().map_elements(custom_string_converter, return_dtype=pl.String)
-    )
-
     del vardtypes, varnonmissing, varmissing, vardistinct, varmin, varmax, varmean, varmedian, varmode, df, dfs, cols, join_cols
 
     workbookname = f"{find_df_name(pldataframe)}_fact_checks.xlsx"
@@ -160,3 +150,4 @@ def fact_check_of_the_data(pldataframe):
 
 #usage example 
 ##fact_check_of_the_data(polarsdataframe)
+
