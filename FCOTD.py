@@ -41,7 +41,7 @@ def fact_check_of_the_data(pldataframe):
     )
 
         # Step 1: Compute column-wise means
-    mean_df = car_selection.mean().fill_null("NA")
+    mean_df = pldataframe.mean().fill_null("NA")
     # Step 2: Build a tidy two-column DataFrame manually
     varmean = pl.DataFrame({
         "Variable_Name": mean_df.columns,
@@ -49,7 +49,7 @@ def fact_check_of_the_data(pldataframe):
     })
 
     # Step 1: Compute column-wise means
-    median_df = car_selection.median().fill_null("NA")
+    median_df = pldataframe.median().fill_null("NA")
     # Step 2: Build a tidy two-column DataFrame manually
     varmedian = pl.DataFrame({
         "Variable_Name": median_df.columns,
@@ -57,7 +57,7 @@ def fact_check_of_the_data(pldataframe):
     })  
 
     # Step 1: Compute column-wise means
-    mode_df = car_selection.select(pl.all().mode().first())
+    mode_df = pldataframe.select(pl.all().mode().first())
     # Step 2: Build a tidy two-column DataFrame manually
     varmode = pl.DataFrame({
         "Variable_Name": mode_df.columns,
