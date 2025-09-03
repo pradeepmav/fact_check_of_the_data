@@ -40,24 +40,31 @@ def fact_check_of_the_data(pldataframe):
         column_names=["Max"]
     )
 
-    varmean = pldataframe.mean().fill_null("NA").transpose(
-        include_header=True,
-        header_name="Variable_Name",
-        column_names=["Mean"]
-    )
+        # Step 1: Compute column-wise means
+    mean_df = car_selection.mean().fill_null("NA")
+    # Step 2: Build a tidy two-column DataFrame manually
+    varmean = pl.DataFrame({
+        "Variable_Name": mean_df.columns,
+        "Mean": [mean_df[0, col] for col in mean_df.columns]
+    })
 
-    varmedian = pldataframe.median().fill_null("NA").transpose(
-        include_header=True,
-        header_name="Variable_Name",
-        column_names=["Median"]
-    )
+    # Step 1: Compute column-wise means
+    median_df = car_selection.median().fill_null("NA")
+    # Step 2: Build a tidy two-column DataFrame manually
+    varmedian = pl.DataFrame({
+        "Variable_Name": median_df.columns,
+        "Median": [median_df[0, col] for col in median_df.columns]
+    })  
 
-    varmode = pldataframe.select(pl.all().mode().first()).transpose(
-        include_header=True,
-        header_name="Variable_Name",
-        column_names=["Mode"]
-    )
+    # Step 1: Compute column-wise means
+    mode_df = car_selection.select(pl.all().mode().first())
+    # Step 2: Build a tidy two-column DataFrame manually
+    varmode = pl.DataFrame({
+        "Variable_Name": mode_df.columns,
+        "Mode": [mode_df[0, col] for col in mode_df.columns]
+    })  
 
+    
     dfs = [
         vardtypes,
         varnonmissing,
@@ -103,6 +110,16 @@ def fact_check_of_the_data(pldataframe):
             "Median",
             "Mode"
         ]
+    )
+
+    # Define a custom function that might return a string
+    def custom_string_converter(x):
+        if x is None:
+            return "N/A"
+        return str(x)
+
+    final = final.with_columns(
+    pl.all().map_elements(custom_string_converter, return_dtype=pl.String)
     )
 
     del vardtypes, varnonmissing, varmissing, vardistinct, varmin, varmax, varmean, varmedian, varmode, df, dfs, cols, join_cols
