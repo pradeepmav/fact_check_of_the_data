@@ -1,4 +1,5 @@
 import polars as pl
+import pandas as pd
 
 def find_df_name(df):
    name = [name for name, obj in globals().items() if id(obj) == id(df)]
@@ -108,9 +109,37 @@ def fact_check_of_the_data(pldataframe):
 
     workbookname = f"{find_df_name(pldataframe)}_fact_checks.xlsx"
 
-    return final.write_excel(
-        workbook=workbookname, worksheet="FCOTD", position="B2", table_style= "Table Style Light 10"
-    )
+    final_pdf = final.to_pandas()
 
-# usage
-# fact_check_of_the_data(polarsdataframe)
+    try:
+    # Primary method
+        return final.write_excel(
+        workbook=workbookname,
+        worksheet="FCOTD",
+        position="B2",
+        table_style="Table Style Light 10"
+    )
+    except Exception as e:
+        print(f"Primary Excel write failed: {e}")
+    
+        try:
+            # Fallback method: write without styling
+            return final_pdf.to_excel("FCOTD.xlsx",
+            index=False
+                # Omitting table_style as a fallback
+            )
+        except Exception as fallback_error:
+            print(f"Fallback Excel write also failed: {fallback_error}")
+
+    # Final fallback: save as CSV
+            try:
+                csv_filename = workbookname.replace(".xlsx", "_fallback.csv")
+                final.to_csv(csv_filename, index=False)
+                print(f"Saved as CSV instead: {csv_filename}")
+                return "Saved as CSV due to Excel write failure"
+            except Exception as csv_error:
+                print(f"CSV fallback failed: {csv_error}")
+                return "All write attempts failed"
+
+#usage example 
+##fact_check_of_the_data(polarsdataframe)
